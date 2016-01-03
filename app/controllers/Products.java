@@ -36,7 +36,14 @@ public class Products extends Controller {
      * Shows a product edit form
      */
     public static Result details(String ean) {
-        return TODO;
+        final Product product = Product.findByEan(ean);
+        if (product == null) {
+            return notFound(String.format("Product %s does not exist.", ean));
+        }
+
+        Form<Product> filledForm = productForm.fill(product);
+        return ok(views.html.products.details.render(filledForm));
+
     }
 
     /**
@@ -53,6 +60,21 @@ public class Products extends Controller {
         flash("Success", String.format("Successfully added product %s", product));
 
         return redirect(routes.Products.list());
+    }
+
+    /**
+     * Deletes the product by EAN
+     */
+    public static Result delete(String ean)
+    {
+        final Product product = Product.findByEan(ean);
+        if (product == null) {
+            return notFound(String.format("Product %s does not exists.", ean));
+        }
+
+        Product.remove(product);
+        return redirect(routes.Products.list());
+
     }
 
 }
