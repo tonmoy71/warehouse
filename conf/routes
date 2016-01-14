@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET           /                     controllers.Products.list()
+GET           /                     controllers.Application.index()
 
 # Product list
 GET           /products/            controllers.Products.list()
